@@ -1,8 +1,8 @@
-from urllib import request
+# from urllib import request
 from bs4 import BeautifulSoup
 import urllib.parse as parse
-import requests
-from aiohttp import ClientSession
+# import requests
+# from aiohttp import ClientSession
 
 
 def parse_listing_page(html, url):

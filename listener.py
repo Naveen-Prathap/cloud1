@@ -23,7 +23,7 @@ class Listener:
             job = self.r.brpop(self.mac, timeout=2)
             if job:
                 job = json.loads(job)
-                subprocess.Popen([self.path, self.redis_ip, job['template_name'], job['worker_id'], self.mac])
+                subprocess.Popen([self.path, job['template_url'], self.redis_ip, job['template_name'], job['worker_id'], self.mac])
 
 
 redis_ip = sys.argv[1]

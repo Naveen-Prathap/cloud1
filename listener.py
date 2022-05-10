@@ -14,7 +14,8 @@ class Listener:
         workers=[]
         for i in range(1,6):
             workers.append({'server_id':self.mac, 'worker_id': f'{self.mac} {i}'})
-        self.r.lpush('free_workers', *workers)
+        for worker in workers:
+            self.r.lpush('free_workers', json.dumps(worker))
         self.path = f'{os.getcwd()}/run_worker.sh'
         subprocess.run['chmod', '+x', self.path]
 

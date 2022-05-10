@@ -4,7 +4,7 @@
 mkdir test
 cd test
 # curl -OL https://github.com/Naveen-Prathap/cloud1/blob/main/del_dir.sh
-curl -OL https://github.com/Naveen-Prathap/cloud1/blob/main/run_worker.sh
-curl _OL https://github.com/Naveen-Prathap/cloud1/blob/main/listener.py
-curl -OL https://github.com/Naveen-Prathap/cloud1/blob/main/worker.py
+curl -OLJ https://raw.githubusercontent.com/Naveen-Prathap/cloud1/main/run_worker.sh
+curl -OLJ https://raw.githubusercontent.com/Naveen-Prathap/cloud1/main/listener.py
+curl -OLJ https://raw.githubusercontent.com/Naveen-Prathap/cloud1/main/worker.py
 python3 listener.py $1

@@ -17,7 +17,7 @@ class Listener:
         for worker in workers:
             self.r.lpush('free_workers', json.dumps(worker))
         self.path = f'{os.getcwd()}/run_worker.sh'
-        subprocess.run['chmod', '+x', self.path]
+        subprocess.run(['chmod', '+x', self.path])
 
     def listen(self) -> None:
         x = 0

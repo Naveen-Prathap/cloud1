@@ -19,8 +19,12 @@ class Listener:
         subprocess.run['chmod', '+x', self.path]
 
     def listen(self) -> None:
+        x = 0
         while True:
             job = self.r.brpop(self.mac, timeout=2)
+            x += 1
+            if x > 1000:
+                break
             if job:
                 job = json.loads(job)
                 subprocess.Popen([self.path, job['template_url'], self.redis_ip, job['template_name'], job['worker_id'], self.mac])

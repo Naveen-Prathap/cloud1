@@ -1,5 +1,6 @@
 # import csv
 import asyncio
+from asyncio import subprocess
 import json
 import redis
 from aiohttp import ClientSession
@@ -59,5 +60,10 @@ async def main(r):
 redis_ip = sys.argv[1]
 r = redis.Redis(host= redis_ip, port=6379, db=0, decode_responses=True)
 asyncio.run(main(r))
-r.lpush('free_workers', {'server_id' : sys.argv[4], 'worker_id' : sys.argv[3]})
 
+r.lpush('free_workers', {'server_id' : sys.argv[4], 'worker_id' : sys.argv[3]})
+# path = path.split('/')[:-1]
+# path = ('/').join(path)
+# path += 'del_dir.sh'
+# subprocess.run['chmod', '+x', path]
+# subprocess.Popen([path, sys.argv[3]])

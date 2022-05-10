@@ -27,7 +27,7 @@ class Listener:
             if x > 1000:
                 break
             if job:
-                job = json.loads(job)
+                job = json.loads(job[1])
                 subprocess.Popen([self.path, job['template_url'], self.redis_ip, job['template_name'], job['worker_id'], self.mac])
 
 

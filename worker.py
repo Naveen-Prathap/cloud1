@@ -32,6 +32,7 @@ async def crawler(r : redis.Redis, session : ClientSession):
                 print('exiting.....')
                 break
         else:
+            # import pdb; pdb.set_trace()
             r.set('urls_flag'+template_name, '1')
             url = r.lpop('urls'+template_name)  
             url = json.loads(url)
@@ -53,7 +54,7 @@ async def crawler(r : redis.Redis, session : ClientSession):
 
 async def main(r):
     async with ClientSession() as session:
-        crawlers =  [asyncio.create_task(crawler(r, session)) for _ in range(5)]
+        crawlers =  [asyncio.create_task(crawler(r, session)) for _ in range(1)]
         await asyncio.gather(*crawlers)
 
 
@@ -61,7 +62,8 @@ redis_ip = sys.argv[1]
 r = redis.Redis(host= redis_ip, port=6379, db=0, decode_responses=True)
 asyncio.run(main(r))
 
-r.lpush('free_workers', {'server_id' : sys.argv[4], 'worker_id' : sys.argv[3]})
+dict1 = json.dumps({'server_id' : sys.argv[4], 'worker_id' : sys.argv[3]})
+r.lpush('free_workers', dict1)
 # path = path.split('/')[:-1]
 # path = ('/').join(path)
 # path += 'del_dir.sh'

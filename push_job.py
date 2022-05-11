@@ -5,7 +5,7 @@ import redis
 r = redis.Redis(host='172.16.220.64', port=6379, db=0, decode_responses=True)
 jobs = [{'template_name': 'template_pokemon',
         'template_url': 'https://raw.githubusercontent.com/Naveen-Prathap/cloud1/main/template_pokemon.py',
-        'instances': '4',
+        'instances': '5',
         'base_url': 'https://scrapeme.live/shop/'},
         {'template_name': 'template_books' ,
         'template_url': 'https://raw.githubusercontent.com/Naveen-Prathap/cloud1/main/template_books.py',

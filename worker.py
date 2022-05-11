@@ -58,7 +58,7 @@ async def crawler(r : redis.Redis, session : ClientSession):
 
 async def main(r):
     async with ClientSession() as session:
-        crawlers =  [asyncio.create_task(crawler(r, session)) for _ in range(1)]
+        crawlers =  [asyncio.create_task(crawler(r, session)) for _ in range(3)]
         await asyncio.gather(*crawlers)
         
         dict1 = json.dumps({'server_id' : sys.argv[4], 'worker_id' : sys.argv[3]})

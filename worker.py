@@ -40,6 +40,7 @@ async def crawler(r : redis.Redis, session : ClientSession):
             url1 = list(url.keys())[0]
             fn = list(url.values())[0]
             html = await fetch(url1, session) 
+            r.incr(f'{template_name}_pulse')
             print('retrieving results')
             dict1 = getattr(template, fn)(html, url1)
             r.sadd('visited'+template_name, url1)
@@ -60,7 +61,7 @@ async def main(r):
         dict1 = json.dumps({'server_id' : sys.argv[4], 'worker_id' : sys.argv[3]})
         dict2 = json.dumps({'template_name' : sys.argv[2]})
         r.lpush('free_workers', dict1)
-        r.lpush('finished_jobs', dict2)
+        r.sadd('finished_jobs', dict2)
 
 
 redis_ip = sys.argv[1]

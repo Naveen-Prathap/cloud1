@@ -28,10 +28,12 @@ def main(r: redis.Redis)-> None:
                 r.lpush('scheduled_jobs', json.dumps({job['template_name']: worker['worker_id'] }))
             else:
                 break
-        finished_job = r.rpop('finished_jobs')
-        if finished_job:
-            finished_job = json.loads(finished_job)
-            write_data(finished_job)
+        finished_jobs = r.smembers('finished_jobs')
+        for job in finished_jobs:
+            if not r.sismember('data_written', job):
+                job = json.loads(job)
+                write_data(job)
+                r.sadd('data_written', json.dumps(job))
 
 
 # r = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)

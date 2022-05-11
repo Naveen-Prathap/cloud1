@@ -23,19 +23,16 @@ async def fetch(url : str, session : ClientSession):
 
 async def crawler(r : redis.Redis, session : ClientSession):
     template_name = sys.argv[2]
-    r.set('sleep_timer', 3)
     while True:
         if r.llen('urls'+template_name) == 0:
             print('Sleeping......')
             r.set('urls_flag'+template_name, '0')
-            await asyncio.sleep(r.get('sleep_timer'))
-            r.incr('sleep_timer')
+            await asyncio.sleep(5)
             if r.llen('urls'+template_name) == 0 and r.get('urls_flag'+template_name) == '0':
                 print('exiting.....')
                 break
         else:
             # import pdb; pdb.set_trace()
-            r.set('sleep_timer', 3)
             r.set('urls_flag'+template_name, '1')
             url = r.lpop('urls'+template_name)  
             url = json.loads(url)

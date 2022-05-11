@@ -39,6 +39,8 @@ async def crawler(r : redis.Redis, session : ClientSession):
             print(url)
             url1 = list(url.keys())[0]
             fn = list(url.values())[0]
+            if r.sismember('visited'+template_name, url1):
+                continue
             html = await fetch(url1, session) 
             r.incr(f'{template_name}_pulse')
             print('retrieving results')

@@ -36,6 +36,6 @@ def main(r: redis.Redis)-> None:
                 r.sadd('data_written', json.dumps(job))
 
 
-# r = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
-r = redis.Redis(host='172.16.220.64', port=6379, db=0, decode_responses=True)
+r = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
+# r = redis.Redis(host='172.16.220.64', port=6379, db=0, decode_responses=True)
 main(r)

@@ -27,7 +27,7 @@ async def crawler(r : redis.Redis, session : ClientSession):
         if r.llen('urls'+template_name) == 0:
             print('Sleeping......')
             r.set('urls_flag'+template_name, '0')
-            await asyncio.sleep(4)
+            await asyncio.sleep(2)
             if r.llen('urls'+template_name) == 0 and r.get('urls_flag'+template_name) == '0':
                 print('exiting.....')
                 break

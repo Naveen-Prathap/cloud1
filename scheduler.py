@@ -24,6 +24,7 @@ def main(r: redis.Redis)-> None:
                 job['worker_id'] = worker['worker_id']
                 if not r.sismember('visited'+job['template_name'], job['base_url']):
                     r.lpush(f'urls{job["template_name"]}', json.dumps({job['base_url'] : 'parse_listing_page'}))
+                    r.sadd('visited'+job['template_name'], job['base_url'])
                 r.lpush(worker['server_id'], json.dumps(job))
                 r.lpush('scheduled_jobs', json.dumps({job['template_name']: worker['worker_id'] }))
             else:

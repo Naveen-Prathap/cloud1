@@ -61,7 +61,7 @@ async def main(r):
         crawlers =  [asyncio.create_task(crawler(r, session)) for _ in range(3)]
         await asyncio.gather(*crawlers)
         
-        dict1 = json.dumps({'server_id' : sys.argv[4], 'worker_id' : sys.argv[3]})
+        dict1 = json.dumps({'server_id' : sys.argv[3], 'worker_id' : f'{sys.argv[3]} {sys.argv[4]}'})
         dict2 = json.dumps({'template_name' : sys.argv[2]})
         r.lpush('free_workers', dict1)
         r.sadd('finished_jobs', dict2)

@@ -9,6 +9,12 @@ import sys
 import os
 # import template_pokemon as template
 
+# --------sys.argv--------
+# [1] is redis_ip
+# [2] is template_name
+# [3] is server_id
+# [4] is worker_id
+
 mod_name = sys.argv[2]
 path = os.getcwd()
 sys.path.append(path)

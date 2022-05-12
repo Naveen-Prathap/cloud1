@@ -14,4 +14,4 @@ jobs = [{'template_name': 'template_pokemon',
 # for job in jobs:    
 #     job = json.dumps(job)
 #     r.lpush('new_jobs', job)
-r.lpush('new_jobs', json.dumps(jobs[1]))
+r.lpush('new_jobs', json.dumps(jobs[0]))

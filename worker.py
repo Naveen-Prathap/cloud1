@@ -1,6 +1,5 @@
 # import csv
 import asyncio
-from asyncio import subprocess
 import json
 import redis
 from aiohttp import ClientSession
@@ -26,9 +25,14 @@ async def fetch(url : str, session : ClientSession):
         x = await response.read()
         return x
 
+async def heartbeat(r:redis.Redis, worker_id:str)->None:
+    r.set(f'hb{worker_id}', 1)
+    r.expire(f'hb{worker_id}', 20)
+    await asyncio.sleep(0.2)
 
 async def crawler(r : redis.Redis, session : ClientSession):
     template_name = sys.argv[2]
+    worker_id = f'{sys.argv[3]} {sys.argv[4]}'
     while True:
         if r.llen('urls'+template_name) == 0:
             print('Sleeping......')
@@ -45,15 +49,18 @@ async def crawler(r : redis.Redis, session : ClientSession):
             print(url)
             url1 = list(url.keys())[0]
             fn = list(url.values())[0]
+            
             if r.sismember('visited'+template_name, url1):
                 continue
-            await asyncio.sleep(0.2)
+            # await asyncio.sleep(0.2)
             html = await fetch(url1, session) 
             r.incr(f'{template_name}_pulse')
             print('retrieving results')
             dict1 = getattr(template, fn)(html, url1)
             r.sadd('visited'+template_name, url1)
-
+            
+            await heartbeat(r, worker_id)
+            
             print("Storing data and urls")
             for datum in dict1['data']:
                 r.lpush('data'+template_name, json.dumps(datum))
@@ -76,10 +83,3 @@ async def main(r):
 redis_ip = sys.argv[1]
 r = redis.Redis(host= redis_ip, port=6379, db=0, decode_responses=True)
 asyncio.run(main(r))
-
-
-# path = path.split('/')[:-1]
-# path = ('/').join(path)
-# path += 'del_dir.sh'
-# subprocess.run['chmod', '+x', path]
-# subprocess.Popen([path, sys.argv[3]])

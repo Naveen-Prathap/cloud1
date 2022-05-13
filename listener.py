@@ -13,7 +13,7 @@ class Listener:
         self.mac = get_mac_address()
         workers=[]
         for i in range(1,6):
-            workers.append({'server_id':self.mac, 'worker_id': f'{self.mac} {i}'})
+            workers.append({'server_id':self.mac, 'worker_id': f'{self.mac} {i}'})        
         for worker in workers:
             self.r.lpush('free_workers', json.dumps(worker))
         self.path = f'{os.getcwd()}/run_worker.sh'

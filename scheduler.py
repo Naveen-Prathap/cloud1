@@ -15,7 +15,7 @@ def main(r: redis.Redis)-> None:
         new_job = r.blpop('new_jobs', timeout=2)
         if new_job:
             new_job1 = json.loads(new_job[1])
-            if not r.sismember('visited'+new_job1['template_name'], new_job1['base_url']):
+            if not r.sismember(f"visited{new_job1['template_name']}", new_job1['base_url']):
                     r.lpush(f'urls{new_job1["template_name"]}', json.dumps({new_job1['base_url'] : 'parse_listing_page'}))
             for _ in range(int(new_job1['instances'])):
                 r.lpush('jobs_to_schedule', new_job[1])
@@ -24,6 +24,7 @@ def main(r: redis.Redis)-> None:
                 worker  = json.loads(r.rpop('free_workers'))
                 job = json.loads(r.rpop('jobs_to_schedule'))
                 job['worker_id'] = worker['worker_id']
+                print(job['worker_id'])
                 r.lpush(worker['server_id'], json.dumps(job))
                 r.lpush('scheduled_jobs', json.dumps({job['template_name']: worker['worker_id'] }))
             else:

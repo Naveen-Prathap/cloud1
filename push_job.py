@@ -11,7 +11,7 @@ jobs = [{'template_name': 'template_pokemon',
         'template_url': 'https://raw.githubusercontent.com/Naveen-Prathap/cloud1/main/template_books.py',
         'instances': '6',
         'base_url': 'http://books.toscrape.com/'}]
-# for job in jobs:    
-#     job = json.dumps(job)
-#     r.lpush('new_jobs', job)
-r.lpush('new_jobs', json.dumps(jobs[0]))
+for job in jobs:    
+    job = json.dumps(job)
+    r.lpush('new_jobs', job)
+# r.lpush('new_jobs', json.dumps(jobs[0]))

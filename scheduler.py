@@ -25,7 +25,7 @@ def queue_new_jobs(r: redis.Redis)-> None:
 
 def schedule_job(r:redis.Redis)->None: 
     job = json.loads(r.rpop('jobs_to_schedule'))
-    if not r.sismember('finished_jobs', job['template_name']):
+    if not r.sismember('finished_jobs', json.dumps({'template_name':job['template_name']})):
         worker  = json.loads(r.rpop('free_workers'))
         job['worker_id'] = worker['worker_id']
         r.lpush(worker['server_id'], json.dumps(job))
